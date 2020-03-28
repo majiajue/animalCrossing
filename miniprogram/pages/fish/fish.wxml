@@ -16,16 +16,22 @@
 </scroll-view>
 <view class="cu-list menu-avatar">
     <view class="cu-item" wx:for="{{fishList}}">
-      <view class="cu-avatar round lg" wx:if="{{item.image}}" style="background-image:url({{item.image}});"></view>
+      <view class="cu-avatar lg" wx:if="{{item.image}}" style="background-image:url({{item.image}});"></view>
       <view class="content">
         <view class="text-grey">
           <text class="text-cut">{{item.name}}</text>
-          <view class="cu-tag round bg-orange sm">{{item.size}}</view>
+          <view class="padding-xs" >
+            <view class="cu-tag radius bg-yellow">{{item.size}}</view>
+          </view>
         </view>
         <view class="text-gray text-sm flex">
-          <text class="text-cut">
+          <view class="padding-xs" >
+            <view class="cu-tag radius bg-olive"><text class="cuIcon-locationfill text-orange margin-right-xs"></text>{{item.place}}</view>
+          </view>
+          
+          <!-- <text class="text-cut">
 							<text class="cuIcon-locationfill text-orange margin-right-xs"></text>{{item.place}}
-          </text>
+          </text> -->
         </view>
       </view>
       <view class="action">
@@ -33,6 +39,7 @@
         <view class="cu-tag round sm" wx:if="{{item.price!=0}}">
         <text class="cuIcon-recharge text-orange margin-right-xs"></text>{{item.price}}
         </view>
+        <view class="text-grey text-xs"><text wx:for="{{item.rarity}}" class="cuIcon-favorfill text-yellow margin-right-xs"></text></view>
       </view>
     </view>
   </view>

@@ -29,7 +29,6 @@ Page({
       env: 'animalcrossing-vxayk'
     })
     const db = wx.cloud.database()
-    //console.log(db.collection('fishinfo').orderBy('_id', 'asc').get())
     const _ = db.command
     var timestamp = Date.parse(new Date());
     var date = new Date(timestamp);

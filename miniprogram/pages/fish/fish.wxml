@@ -1,0 +1,38 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">每月鱼讯</view></cu-custom>
+
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==Nav1?'text-orange cur':''}}" wx:for="{{nav1List}}" wx:key bindtap="tab1Select" data-id="{{index}}">
+      {{item}}
+    </view>
+  </view>
+</scroll-view>
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{index==Nav2?'text-orange cur':''}}" wx:for="{{nav2List}}" bindtap="tab2Select" data-id="{{index}}">
+      <text class="cuIcon-discover text-orange margin-right-xs"></text>{{item}}
+    </view>
+  </view>
+</scroll-view>
+<view class="cu-list menu-avatar">
+    <view class="cu-item" wx:for="{{fishList}}">
+      <view class="cu-avatar round lg" wx:if="{{item.image}}" style="background-image:url({{item.image}});"></view>
+      <view class="content">
+        <view class="text-grey">
+          <text class="text-cut">{{item.name}}</text>
+          <view class="cu-tag round bg-orange sm">{{item.size}}</view>
+        </view>
+        <view class="text-gray text-sm flex">
+          <text class="text-cut">
+							<text class="cuIcon-locationfill text-orange margin-right-xs"></text>{{item.place}}
+          </text>
+        </view>
+      </view>
+      <view class="action">
+        <view class="text-grey text-xs">{{item.time}}</view>
+        <view class="cu-tag round sm" wx:if="{{item.price!=0}}">
+        <text class="cuIcon-recharge text-orange margin-right-xs"></text>{{item.price}}
+        </view>
+      </view>
+    </view>
+  </view>

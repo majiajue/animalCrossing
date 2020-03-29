@@ -1,0 +1,32 @@
+.text-cut{
+  margin-right: 20rpx;
+  margin-left: 20rpx;
+}
+.price-and-time{
+  width: 150rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tab2{
+  background: #ffffff;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx;
+  align-items: center;
+}
+.tab2 switch{
+  margin: 0 10rpx;
+}
+.tab2 switch::after,
+.tab2 switch::before {
+	color: var(--white) !important;
+}
+
+.tab2 switch::before {
+	content: "北" !important;
+}
+
+switch::after {
+  content: "南" !important;
+}

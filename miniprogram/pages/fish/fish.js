@@ -7,7 +7,26 @@ Page({
       
     ],
     nav1List:["本月鱼讯","下月预告"],
-    nav2List:["北半球", "南半球"]
+    nav2List:["北半球", "南半球"],
+    placeList: [{
+      name: '大海',
+      checked: true
+    }, {
+      name: '河流',
+      checked: true
+    }, {
+      name: '池塘',
+      checked: true
+    }, {
+      name: '崖上河流',
+      checked: true
+    }, {
+      name: '出海口',
+      checked: true
+    }, {
+      name: '码头',
+      checked: true,
+    }]
   },
   tab1Select(e) {
     this.setData({
@@ -24,6 +43,15 @@ Page({
     this.changeNav()
   },
   
+  getEnablePlace: function () {
+    var places = []
+    for (let i = 0; i < this.data.placeList.length; i++) {
+      if (this.data.placeList[i].checked) {
+        places.push(this.data.placeList[i].name)
+      }
+    }
+    return places
+  },
   changeNav: async function(){
     wx.cloud.init({
       env: 'animalcrossing-vxayk'
@@ -32,7 +60,7 @@ Page({
       env: 'animalcrossing-vxayk'
     })
     const db = wx.cloud.database()
-
+    const _ = db.command
     var timestamp = Date.parse(new Date());
     var date = new Date(timestamp);
     var M = date.getMonth() + 1
@@ -41,18 +69,23 @@ Page({
     if(this.data.Nav1 == 1){
       M = M==12?1:M+1
     }
+    var places = this.getEnablePlace()
+    console.log(places)
     var condition = {
-      northMonth: M
+      northMonth: M,
+      place: _.in(places)
     }
     if (this.data.Nav2 == 1) {
       condition = {
-        southMonth: M
+        southMonth: M,
+        place: _.in(places)
       }
     }
     var count = 0
     await db.collection('fishinfo').where(condition).count().then(res => {
       count = res.total;
     })
+    console.log(count)
     // const page = count % 20 == 0 ? count / 20 : count / 20 + 1;
     let result = []
     for (let i = 0; i < count; i += 20) {
@@ -91,10 +124,18 @@ Page({
       }else if(goFlag == 1){
         result[i].flag = 1
       }else if(backFlag == 1){
+        result[i].flag = 2
+      }else {
         result[i].flag = 0
       }
     }
     
+    result = result.sort(function(a,b){
+      if(a.flag == b.flag){
+        return 0;
+      }
+      return a.flag > b.flag?-1:1
+    })
     // if(this.data.Nav2 == 0){
     //   result = await db.collection('fishinfo').where({
     //     northMonth: M
@@ -110,6 +151,30 @@ Page({
     })
   },
   onLoad: function (options) {
+    this.changeNav()
+  },
+  showModal(e) {
+    this.setData({
+      modalName: e.currentTarget.dataset.target
+    })
+  },
+  hideModal(e) {
+    this.setData({
+      modalName: null
+    })
+  },
+  ChooseCheckbox(e) {
+    let items = this.data.placeList;
+    let values = e.currentTarget.dataset.value;
+    for (let i = 0, lenI = items.length; i < lenI; ++i) {
+      if (items[i].name == values) {
+        items[i].checked = !items[i].checked;
+        break
+      }
+    }
+    this.setData({
+      placeList: items
+    })
     this.changeNav()
   }
 })

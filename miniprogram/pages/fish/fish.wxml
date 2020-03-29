@@ -15,6 +15,24 @@
 <!-- 哪个球 -->
 <view class="tab2">
   半球<switch bindchange="tab2Select"></switch>
+  <view class="action">
+    <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="ChooseModal">位置</button>
+  </view>
+</view>
+
+<view class="cu-modal bottom-modal {{modalName=='ChooseModal'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog" catchtap>
+    <view class="cu-bar bg-white">
+      <view class="action text-blue" bindtap="hideModal">取消</view>
+      <view class="action text-green" bindtap="hideModal">确定</view>
+    </view>
+    <view class="grid col-3 padding-sm">
+      <view wx:for="{{placeList}}" class="padding-xs" wx:key="{{index}}">
+        <button class="cu-btn orange lg block {{item.checked?'bg-orange':'line-orange'}}" bindtap="ChooseCheckbox" data-value="{{item.name}}"> {{item.name}}
+        </button>
+      </view>
+    </view>
+  </view>
 </view>
 <!-- <view class="cu-item flex-sub {{index==Nav2?'text-orange cur':''}}" wx:for="{{nav2List}}" bindtap="tab2Select" data-id="{{index}}">
         <text class="cuIcon-discover text-orange margin-right-xs"></text>{{item}}
@@ -26,7 +44,7 @@
   <view class="cu-item" wx:for="{{fishList}}">
     <!-- 图片 -->
     <view class="cu-avatar lg" wx:if="{{item.image}}" style="background-image:url({{item.image}});">
-      <view class="cu-tag badge" wx:if="{{item.flag == 0}}">new</view>
+      <view class="cu-tag badge" wx:if="{{item.flag == 2}}">new</view>
       <view class="cu-tag badge" wx:if="{{item.flag == 1}}">即将迁徙</view>
     </view>
 

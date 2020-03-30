@@ -26,8 +26,28 @@ Page({
     }, {
       name: '码头',
       checked: true,
-    }]
+    }],
+    orderByList:[{
+      name:"默认",
+      val:"flag",
+      cause:-1
+    }, {
+        name: "位置",
+        val: "place",
+        cause:1
+      }, {
+        name: "稀有度",
+        val: "rarity",
+        cause: -1
+      }, {
+        name: "铃钱",
+        val: "price",
+        cause: -1
+      }],
+      orderBy:0,
+      orderByText:"默认"
   },
+
   tab1Select(e) {
     this.setData({
       Nav1: e.currentTarget.dataset.id,
@@ -53,9 +73,7 @@ Page({
     return places
   },
   changeNav: async function(){
-    wx.cloud.init({
-      env: 'animalcrossing-vxayk'
-    })
+    this.loadModal()
     wx.cloud.init({
       env: 'animalcrossing-vxayk'
     })
@@ -70,7 +88,6 @@ Page({
       M = M==12?1:M+1
     }
     var places = this.getEnablePlace()
-    console.log(places)
     var condition = {
       northMonth: M,
       place: _.in(places)
@@ -85,7 +102,6 @@ Page({
     await db.collection('fishinfo').where(condition).count().then(res => {
       count = res.total;
     })
-    console.log(count)
     // const page = count % 20 == 0 ? count / 20 : count / 20 + 1;
     let result = []
     for (let i = 0; i < count; i += 20) {
@@ -129,12 +145,15 @@ Page({
         result[i].flag = 0
       }
     }
-    
+    let by = this.data.orderByList[this.data.orderBy]
     result = result.sort(function(a,b){
-      if(a.flag == b.flag){
+      let prop = by.val
+      if (a[prop] == b[prop]){
         return 0;
       }
-      return a.flag > b.flag?-1:1
+      let r = a[prop] > b[prop] ? 1 : -1
+      r = r * -1
+      return r
     })
     // if(this.data.Nav2 == 0){
     //   result = await db.collection('fishinfo').where({
@@ -149,6 +168,7 @@ Page({
     this.setData({
       fishList : result
     })
+    this.hideLoadModel()
   },
   onLoad: function (options) {
     this.changeNav()
@@ -162,6 +182,7 @@ Page({
     this.setData({
       modalName: null
     })
+    this.changeNav()
   },
   ChooseCheckbox(e) {
     let items = this.data.placeList;
@@ -175,6 +196,28 @@ Page({
     this.setData({
       placeList: items
     })
+  },
+  bindOrderBy(e){
+    let text = this.data.orderByList[e.detail.value].name
+    this.setData({
+      orderBy: e.detail.value,
+      orderByText: text
+    })
     this.changeNav()
+    this.hideModal(e)
+  },
+  loadModal() {
+    this.setData({
+      loadModal: true
+    })
+    
+  },
+  hideLoadModel(){
+    this.setData({
+      loadModal: false
+    })
+  },
+  onShareAppMessage: function () {
+
   }
 })

@@ -5,7 +5,18 @@ Page({
     CustomBar: app.globalData.CustomBar,
     
     gridCol:3,
-    skin: false
+    skin: false,
+
+    appId: "wx8abaf00ee8c3202e",
+    extraData: {
+      // 把1221数字换成你的产品ID，否则会跳到别的产品
+      id: "wx6d18b1a09c333147",
+      // 自定义参数，具体参考文档
+      customData: {
+        clientInfo: `iPhone OS 10.3.1 / 3.2.0.43 / 0`,
+        imei: '7280BECE2FC29544172A2B858E9E90D0'
+      }
+    }
   },
   showModal(e) {
     this.setData({
@@ -77,4 +88,35 @@ Page({
       ListTouchDirection: null
     })
   },
+  feedback: function(){
+    const Tucao = requirePlugin('tucao').default;
+    const userInfo = {
+      productId: 139412,
+      avatar: app.globalData.avatar,
+      nickname: app.globalData.nickname
+    }
+
+    var url = Tucao.getUrl(userInfo);
+
+    wx.navigateTo({
+      url: url
+    });
+  },
+  onLoad: function (options) {
+    let res = wx.getSystemInfoSync()
+    this.setData({
+      extraData: {
+        // 把1221数字换成你的产品ID，否则会跳到别的产品
+        id: "wx6d18b1a09c333147",
+        // 自定义参数，具体参考文档
+        customData: {
+          clientInfo: res.model + '/' + res.system + '/' + res.platform
+        }
+      }
+    })
+    
+  },
+  onShareAppMessage: function(){
+
+  }
 })

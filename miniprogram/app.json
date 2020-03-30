@@ -12,5 +12,12 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
   },
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "plugins": {
+    "tucao": {
+      "version": "1.1.5",
+      "provider": "wx8abaf00ee8c3202e"
+    }
+  }
+  
 }

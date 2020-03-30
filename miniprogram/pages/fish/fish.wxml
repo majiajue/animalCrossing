@@ -14,16 +14,19 @@
 
 <!-- 哪个球 -->
 <view class="tab2">
-  半球<switch bindchange="tab2Select"></switch>
+  
   <view class="action">
+  半球<switch bindchange="tab2Select"></switch>
     <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="ChooseModal">位置</button>
+  </view>
+  <view class="action">
+    排序:<button class="cu-btn bg-green shadow" bindtap="showModal" data-target="RadioModal">{{orderByText}}</button>
   </view>
 </view>
 
 <view class="cu-modal bottom-modal {{modalName=='ChooseModal'?'show':''}}" bindtap="hideModal">
   <view class="cu-dialog" catchtap>
     <view class="cu-bar bg-white">
-      <view class="action text-blue" bindtap="hideModal">取消</view>
       <view class="action text-green" bindtap="hideModal">确定</view>
     </view>
     <view class="grid col-3 padding-sm">
@@ -34,11 +37,27 @@
     </view>
   </view>
 </view>
+<view class="cu-modal {{modalName=='RadioModal'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog" catchtap>
+    <radio-group class="block" bindchange="bindOrderBy">
+      <view class="cu-list menu text-left">
+        <view class="cu-item" wx:for="{{orderByList}}" wx:key>
+          <label class="flex justify-between align-center flex-sub">
+            <view class="flex-sub">{{item.name}}</view>
+            <radio class="round" value="{{index}}" checked="{{index==orderBy}}"></radio>
+          </label>
+        </view>
+      </view>
+    </radio-group>
+  </view>
+</view>
 <!-- <view class="cu-item flex-sub {{index==Nav2?'text-orange cur':''}}" wx:for="{{nav2List}}" bindtap="tab2Select" data-id="{{index}}">
         <text class="cuIcon-discover text-orange margin-right-xs"></text>{{item}}
       </view> -->
 
-
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <view class='gray-text'>加载中...</view>
+</view>
 <view class="cu-list menu-avatar">
 
   <view class="cu-item" wx:for="{{fishList}}">
